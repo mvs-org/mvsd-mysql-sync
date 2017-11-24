@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+    mysql:
+      image: library/mysql
+      environment:
+          - MYSQL_ROOT_PASSWORD=supersecret
+          - MYSQL_DATABASE=explorer
+    sync:
+      build: ..
+      environment:
+          - DB_HOST=mysql
+          - DB_USER=root
+          - DB_PASS=supersecret
+          - DB_PORT=3306
+          - DB_NAME=explorer
+          - MVSD_HOST=mvsd
+          - MVSD_PORT=8820
+          - MAX_RETRY=10
+      links:
+          - mysql
+          - mvsd
+    mvsd:
+      image: cangr/mvsd
